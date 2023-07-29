@@ -1,0 +1,32 @@
+<nav>
+  <ul class="bb-layout__vertical-nav">
+    <li class="bb-layout__vertical-nav-item" *bbIfEntitlements="permissions.canViewAccounts">
+      <a
+        routerLink="/accounts"
+        routerLinkActive="bb-layout__vertical-nav-item-link--active"
+        class="bb-layout__vertical-nav-item-link"
+        aria-label="Accounts"
+        #accountsRouterLink="routerLinkActive"
+        [attr.aria-current]="accountsRouterLink.isActive ? 'page' : undefined"
+      >
+        <bb-icon-ui class="bb-layout__vertical-nav-item-icon" name="accounts"></bb-icon-ui>
+        <span class="bb-layout__vertical-nav-item-title" i18n="@@accounts.nav.item.title">Accounts</span>
+      </a>
+    </li>
+    <li class="bb-layout__vertical-nav-item" *bbIfEntitlements="permissions.canViewAccountStatements">
+      <a
+        routerLink="/account-statements"
+        routerLinkActive="bb-layout__vertical-nav-item-link--active"
+        class="bb-layout__vertical-nav-item-link"
+        aria-label="Account Statements"
+        #accountStatementsRouterLink="routerLinkActive"
+        [attr.aria-current]="accountStatementsRouterLink.isActive ? 'page' : undefined"
+      >
+        <bb-icon-ui class="bb-layout__vertical-nav-item-icon" name="description"></bb-icon-ui>
+        <span class="bb-layout__vertical-nav-item-title" i18n="@@account-statements.nav.item.title"
+          >Account Statements</span
+        >
+      </a>
+    </li>
+  </ul>
+</nav>

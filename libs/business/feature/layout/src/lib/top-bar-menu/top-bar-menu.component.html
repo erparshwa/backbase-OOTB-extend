@@ -1,0 +1,17 @@
+<div class="bb-layout__topbar bb-layout__topbar--sm" role="banner">
+  <!-- Hamburger -->
+  <button
+    [attr.aria-expanded]="layoutService.navigationExpanded$ | async"
+    (click)="layoutService.toggleNav()"
+    class="bb-layout__nav-expand-marker"
+    aria-label="Toggle sidebar"
+    i18n-aria-label="Sidebar Toggler|Button for toggling sidebar state@@bb-layout.sidebar_toggler"
+  >
+    <span class="bb-icon"></span>
+  </button>
+
+  <!-- Logo -->
+  <div class="bb-layout__branding-area">
+    <bb-logo-ui type="emblem"></bb-logo-ui>
+  </div>
+</div>

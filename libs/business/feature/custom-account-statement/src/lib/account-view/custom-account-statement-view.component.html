@@ -1,0 +1,152 @@
+<ng-container *ngIf="config">
+  <!-- account-picker -->
+  <div class="bb-block bb-block--xl">
+    <bb-account-statement-account-picker-container
+      [searchable]="true"
+      [extendedDetails]="true"
+      [favoriteFirst]="true"
+      [size]="config.accountsPageSize"
+      [multiple]="config.selectMultipleAccounts"
+      [multiSelectLabelLimit]="config.selectedAccountNamesDisplayLimit"
+    ></bb-account-statement-account-picker-container>
+  </div>
+
+  <div class="card">
+    <ng-container *ngIf="accountIds.length; else noAccountSelected">
+      <div class="card-body" *ngIf="!loading">
+        <!-- Filter -->
+        <div class="mb-5">
+          <bb-collapsible-accordion-ui>
+            <bb-collapsible-card-ui>
+              <h3 bbCollapsibleTitle class="text-primary">{{ isFilterApplied ? 'Filter Applied' : 'Filter' }}</h3>
+              <div bbCollapsibleBody>
+                <form [formGroup]="filterForm" (ngSubmit)="onFilterSubmit()">
+                  <div class="row">
+                    <div class="col">
+                      <bb-input-text-ui
+                        label="Account Number"
+                        formControlName="accountNumber"
+                        placeholder="Search by Account Number"
+                      ></bb-input-text-ui>
+                    </div>
+                    <div class="col">
+                      <bb-dropdown-multi-select-ui
+                        label="Category"
+                        placeholder="Please choose one or more Category"
+                        formControlName="categories"
+                      >
+                        <bb-dropdown-multi-select-option-ui
+                          [value]="category"
+                          [label]="category"
+                          *ngFor="let category of categories"
+                        >
+                        </bb-dropdown-multi-select-option-ui>
+                      </bb-dropdown-multi-select-ui>
+                    </div>
+                  </div>
+                  <div>
+                    <button bbButton type="submit" color="primary" buttonSize="sm" class="my-4 mr-4">Apply</button>
+                    <button
+                      bbButton
+                      [hidden]="!isFilterApplied"
+                      type="button"
+                      color="secondary"
+                      buttonSize="sm"
+                      class="my-4"
+                      (click)="resetFilter()"
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </bb-collapsible-card-ui>
+          </bb-collapsible-accordion-ui>
+        </div>
+
+        <!-- Statements -->
+        <div class="table-responsive-lg">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>
+                  <span class="th-content">Account Name, Number</span>
+                </th>
+                <th>
+                  <span class="th-content">Account Id</span>
+                </th>
+                <th>
+                  <span class="th-content">Category</span>
+                </th>
+                <th>
+                  <span class="th-content">Date</span>
+                </th>
+                <th class="text-center">
+                  <span class="th-content">Preview</span>
+                </th>
+                <th class="text-center">
+                  <span class="th-content">Download</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let accountStatement of statements; let rowNumber = index">
+                <td class="text-break">
+                  <div class="mb-2">{{ accountStatement.accountName }}</div>
+                  <div>{{ accountStatement.accountNumber }}</div>
+                </td>
+                <td class="text-break">
+                  {{ accountStatement.accountId }}
+                </td>
+                <td>
+                  {{ accountStatement.category }}
+                </td>
+                <td>
+                  {{ accountStatement.date | date: 'shortDate' }}
+                </td>
+                <td class="text-center">
+                  <button
+                    class="btn btn-link"
+                    *ngIf="accountStatement.documents.length > 0"
+                    (click)="viewOnline(accountStatement.documents)"
+                  >
+                    <bb-icon-ui name="open-in-new"></bb-icon-ui>
+                  </button>
+                </td>
+
+                <td class="text-center">
+                  <button
+                    class="btn btn-link"
+                    *ngIf="accountStatement.documents.length > 0"
+                    (click)="goToDownloadFile(accountStatement.documents)"
+                  >
+                    <bb-icon-ui name="get-app"></bb-icon-ui>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <bb-pagination-ui
+          (pageChange)="onPageChange($event)"
+          [boundaryLinks]="false"
+          [directionLinks]="true"
+          [itemsPerPage]="config.pageSize"
+          [maxNavPages]="3"
+          [page]="currentPage"
+          [totalItems]="totalRecords"
+        >
+        </bb-pagination-ui>
+      </div>
+      <bb-loading-indicator-ui
+        *ngIf="loading"
+        data-role="account-statements-main__loading"
+        loaderSize="lg"
+      ></bb-loading-indicator-ui>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #noAccountSelected>
+  <div class="m-4 p-4 text-center">No account selected</div>
+</ng-template>

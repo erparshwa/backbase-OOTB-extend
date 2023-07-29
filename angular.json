@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "projects": {
+    "business-assets": "libs/business/assets",
+    "business-communication": "libs/business/feature/communication",
+    "business-layout": "libs/business/feature/layout",
+    "business-universal": "apps/business-universal",
+    "shared-app-core": "libs/shared/util/app-core",
+    "shared-auth": "libs/shared/feature/auth",
+    "shared-routable-modal": "libs/shared/feature/routable-modal",
+    "shared-user-context": "libs/shared/feature/user-context"
+  }
+}
